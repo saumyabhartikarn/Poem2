@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>अनकहे लफ्ज़</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ffd700">
+
+<style>
+body{
+  margin:0;
+  font-family: system-ui;
+  background:#fce4ec;
+}
+
+/* SPLASH */
+#splash{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:#ffd700;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:28px;
+  font-weight:bold;
+  z-index:9999;
+  animation:fadeOut 2s forwards;
+}
+
+@keyframes fadeOut{
+  0%{opacity:1;}
+  100%{opacity:0; visibility:hidden;}
+}
+
+/* HEADER */
+.header{
+  background:#ffd700;
+  padding:15px;
+  text-align:center;
+  font-size:20px;
+}
+
+/* LIST */
+.list{
+  padding:10px;
+}
+
+.card{
+  background:white;
+  padding:15px;
+  margin-bottom:10px;
+  border-radius:12px;
+}
+
+/* FLOAT BUTTON */
+.fab{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:60px;
+  height:60px;
+  background:#87CEEB;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:30px;
+}
+
+/* EDITOR */
+#editor{
+  display:none;
+  height:100vh;
+  padding:15px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+}
+
+#title{
+  font-size:20px;
+  border:none;
+  outline:none;
+}
+
+#content{
+  flex:1;
+  border:none;
+  outline:none;
+  resize:none;
+}
+
+/* BACK */
+.back{
+  background:#ffc0cb;
+  color:#0000ff;
+  padding:5px 10px;
+  border-radius:10px;
+  display:inline-block;
+  margin-bottom:10px;
+}
+
+/* SAVE */
+.saveBtn{
+  background:#87CEEB;
+  border:none;
+  padding:10px;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SPLASH -->
+<div id="splash">अनकहे लफ्ज़</div>
+
+<div class="header">अनकहे लफ्ज़</div>
+
+<!-- LIST -->
+<div id="listPage" class="list"></div>
+
+<!-- EDITOR -->
+<div id="editor">
+  <div class="back" onclick="goBack()">← Back</div>
+
+  <input id="title" placeholder="Title">
+  <textarea id="content" placeholder="Write your kavita..."></textarea>
+
+  <button class="saveBtn" onclick="save()">Save</button>
+</div>
+
+<!-- FLOAT -->
+<div class="fab" onclick="newNote()">+</div>
+
+<script>
+
+// REGISTER SERVICE WORKER
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+
+let notes = JSON.parse(localStorage.getItem("kavita")||"[]");
+let current = null;
+
+// LOAD
+function load(){
+  let list = document.getElementById("listPage");
+  list.innerHTML="";
+
+  notes.slice().reverse().forEach((n,i)=>{
+    let div = document.createElement("div");
+    div.className="card";
+
+    div.onclick = ()=>openNote(notes.length-1-i);
+
+    div.innerHTML = `
+      <h3>${n.title || "No Title"}</h3>
+      <p>${(n.content||"").substring(0,60)}...</p>
+    `;
+
+    list.appendChild(div);
+  });
+}
+
+// NEW
+function newNote(){
+  current = null;
+  document.getElementById("title").value="";
+  document.getElementById("content").value="";
+  openEditor();
+}
+
+// OPEN
+function openNote(i){
+  current = i;
+  let n = notes[i];
+
+  document.getElementById("title").value=n.title;
+  document.getElementById("content").value=n.content;
+
+  openEditor();
+}
+
+// OPEN EDITOR
+function openEditor(){
+  document.getElementById("listPage").style.display="none";
+  document.getElementById("editor").style.display="flex";
+}
+
+// SAVE
+function save(){
+  let t = document.getElementById("title").value;
+  let c = document.getElementById("content").value;
+
+  let data = {
+    title:t,
+    content:c,
+    date:new Date().toLocaleString()
+  };
+
+  if(current==null){
+    notes.push(data);
+  } else {
+    notes[current]=data;
+  }
+
+  localStorage.setItem("kavita", JSON.stringify(notes));
+  goBack();
+}
+
+// BACK
+function goBack(){
+  document.getElementById("editor").style.display="none";
+  document.getElementById("listPage").style.display="block";
+  load();
+}
+
+// INIT
+load();
+
+</script>
+
+</body>
+</html>
