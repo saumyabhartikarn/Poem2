@@ -1,113 +1,307 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Poem App</title>
+<title>अनकहे लफ्ज़</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ffd700">
 
 <style>
-
-/* Background */
 body{
-    margin:0;
-    font-family: Arial, sans-serif;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background: linear-gradient(135deg,#1e1e2f,#2b5876,#4e4376);
+  margin:0;
+  font-family: system-ui;
+  background:#fce4ec;
 }
 
-/* App Box */
-.app{
-    width:90%;
-    max-width:400px;
-    padding:20px;
-    text-align:center;
+/* SPLASH */
+#splash{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:#ffd700;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:28px;
+  font-weight:bold;
+  z-index:9999;
+  animation:fadeOut 2s forwards;
 }
 
-/* Title */
-h1{
-    color:white;
-    margin-bottom:20px;
+@keyframes fadeOut{
+  0%{opacity:1;}
+  100%{opacity:0; visibility:hidden;}
 }
 
-/* Glass Button Style */
-.glass-btn{
-    width:100%;
-    padding:15px;
-    margin:10px 0;
-    font-size:18px;
-    color:white;
-    border:none;
-    border-radius:15px;
-
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-    border: 1px solid rgba(255,255,255,0.25);
-
-    cursor:pointer;
-    transition: 0.3s ease;
+/* HEADER */
+.header{
+  background:#ffd700;
+  padding:15px;
+  text-align:center;
+  font-size:20px;
 }
 
-/* Hover Effect */
-.glass-btn:hover{
-    transform: scale(1.05);
-    background: rgba(255,255,255,0.25);
+/* TOP BUTTONS - GLASS JELLY STYLE */
+.topBtns{
+  text-align:center;
+  margin:10px;
 }
 
-/* Active Effect */
-.glass-btn:active{
-    transform: scale(0.95);
+.topBtns button{
+  padding:10px 14px;
+  margin:5px;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+  color:white;
+
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+
+  transition:0.25s ease;
 }
 
-/* Different colors */
-.save{ background: rgba(0,255,150,0.2); }
-.back{ background: rgba(255,100,100,0.2); }
-.add{ background: rgba(100,150,255,0.2); }
-
-/* Poem Box */
-.poem-box{
-    margin-top:20px;
-    padding:15px;
-    border-radius:15px;
-    background: rgba(255,255,255,0.1);
-    color:white;
-    backdrop-filter: blur(10px);
+.topBtns button:hover{
+  transform: scale(1.05);
+  background: rgba(255,255,255,0.25);
 }
 
-textarea{
-    width:100%;
-    height:120px;
-    border:none;
-    border-radius:10px;
-    padding:10px;
-    outline:none;
-    resize:none;
+/* LIST */
+.list{
+  padding:10px;
 }
 
+.card{
+  background:white;
+  padding:15px;
+  margin-bottom:10px;
+  border-radius:12px;
+}
+
+/* FLOAT BUTTON - GLASS STYLE */
+.fab{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:30px;
+  cursor:pointer;
+  color:white;
+
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+
+  transition:0.25s ease;
+}
+
+.fab:hover{
+  transform: scale(1.1);
+}
+
+/* EDITOR */
+#editor{
+  display:none;
+  height:100vh;
+  padding:15px;
+  box-sizing:border-box;
+  flex-direction:column;
+}
+
+#title{
+  font-size:20px;
+  border:none;
+  outline:none;
+}
+
+#content{
+  flex:1;
+  border:none;
+  outline:none;
+  resize:none;
+}
+
+/* BACK BUTTON - GLASS */
+.back{
+  padding:8px 12px;
+  border-radius:12px;
+  display:inline-block;
+  margin-bottom:10px;
+  cursor:pointer;
+  color:white;
+
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+}
+
+/* SAVE BUTTON - GLASS */
+.saveBtn{
+  border:none;
+  padding:12px;
+  border-radius:12px;
+  cursor:pointer;
+  color:white;
+
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+
+  transition:0.25s ease;
+}
+
+.saveBtn:hover{
+  transform: scale(1.05);
+}
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<div id="splash">अनकहे लफ्ज़</div>
 
-    <h1>✨ My Poem App ✨</h1>
+<div class="header">अनकहे लफ्ज़</div>
 
-    <!-- Poem Input -->
-    <div class="poem-box">
-        <textarea placeholder="Write your poem here..."></textarea>
-    </div>
-
-    <!-- Glass Buttons -->
-    <button class="glass-btn save">💾 Save Poem</button>
-    <button class="glass-btn add">➕ Add New Poem</button>
-    <button class="glass-btn back">⬅ Back</button>
-
+<div class="topBtns">
+  <button onclick="exportData()">📤 Backup</button>
+  <input type="file" id="importFile" onchange="importData()" style="display:none;">
+  <button onclick="document.getElementById('importFile').click()">📥 Restore</button>
 </div>
 
+<div id="listPage" class="list"></div>
+
+<div id="editor">
+  <div class="back" onclick="goBack()">← Back</div>
+
+  <input id="title" placeholder="Title">
+  <textarea id="content" placeholder="Write your kavita..."></textarea>
+
+  <button class="saveBtn" onclick="save()">Save</button>
+</div>
+
+<div class="fab" onclick="newNote()">+</div>
+
+<script>
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+
+let notes = JSON.parse(localStorage.getItem("kavita")||"[]");
+let current = null;
+
+function load(){
+  let list = document.getElementById("listPage");
+  list.innerHTML="";
+
+  notes.slice().reverse().forEach((n,i)=>{
+    let div = document.createElement("div");
+    div.className="card";
+
+    div.onclick = ()=>openNote(notes.length-1-i);
+
+    div.innerHTML = `
+      <h3>${n.title || "No Title"}</h3>
+      <p>${(n.content||"").substring(0,60)}...</p>
+    `;
+
+    list.appendChild(div);
+  });
+}
+
+function newNote(){
+  current = null;
+  document.getElementById("title").value="";
+  document.getElementById("content").value="";
+  openEditor();
+}
+
+function openNote(i){
+  current = i;
+  let n = notes[i];
+
+  document.getElementById("title").value=n.title;
+  document.getElementById("content").value=n.content;
+
+  openEditor();
+}
+
+function openEditor(){
+  document.getElementById("listPage").style.display="none";
+  document.getElementById("editor").style.display="flex";
+}
+
+function save(){
+  let t = document.getElementById("title").value;
+  let c = document.getElementById("content").value;
+
+  let data = {
+    title:t,
+    content:c,
+    date:new Date().toLocaleString()
+  };
+
+  if(current==null){
+    notes.push(data);
+  } else {
+    notes[current]=data;
+  }
+
+  localStorage.setItem("kavita", JSON.stringify(notes));
+  goBack();
+}
+
+function goBack(){
+  document.getElementById("editor").style.display="none";
+  document.getElementById("listPage").style.display="block";
+  load();
+}
+
+function exportData(){
+  let data = localStorage.getItem("kavita") || "[]";
+  let blob = new Blob([data], {type:"application/json"});
+  let a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "kavita_backup.json";
+  a.click();
+}
+
+function importData(){
+  let file = document.getElementById("importFile").files[0];
+  if(!file) return;
+
+  let reader = new FileReader();
+  reader.onload = function(){
+    localStorage.setItem("kavita", reader.result);
+    alert("Backup Restored ✅");
+    location.reload();
+  };
+  reader.readAsText(file);
+}
+
+load();
+
+</script>
+
 </body>
-</html>
+    </html>
