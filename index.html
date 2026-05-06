@@ -9,11 +9,11 @@
 <meta name="theme-color" content="#ffd700">
 
 <style>
-
 body{
   margin:0;
   font-family: system-ui;
-  background:#fce4ec;
+  background:#111; /* dark for glass effect */
+  color:white;
 }
 
 /* SPLASH */
@@ -38,78 +38,77 @@ body{
 
 /* HEADER */
 .header{
-  background:#ffd700;
+  background:#222;
   padding:15px;
   text-align:center;
   font-size:20px;
 }
 
 /* =========================
-   ✨ SHINY GLASS BUTTONS
+   💎 LIQUID GLASS BUTTON
 ========================= */
 
-button, .fab, .saveBtn, .back{
-  position:relative;
-  overflow:hidden;
+.liquid-btn{
+  position: relative;
+  padding: 12px 20px;
+  margin:5px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
 
-  border:none;
-  border-radius:16px;
-  cursor:pointer;
-  color:white;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
 
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  border:1px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 
   box-shadow:
-    0 8px 25px rgba(0,0,0,0.25),
-    inset 0 1px 12px rgba(255,255,255,0.35);
+    0 8px 25px rgba(0,0,0,0.6),
+    inset 0 2px 6px rgba(255,255,255,0.25),
+    inset 0 -2px 6px rgba(0,0,0,0.6);
 
-  transition:0.3s ease;
+  border: 1px solid rgba(255,255,255,0.2);
+
+  overflow: hidden;
 }
 
-/* SHINE EFFECT */
-button::before,
-.fab::before,
-.saveBtn::before,
-.back::before{
+/* top shine */
+.liquid-btn::after{
   content:"";
   position:absolute;
-  top:-60%;
-  left:-70%;
-  width:40%;
-  height:200%;
-  background: rgba(255,255,255,0.45);
-  transform: rotate(25deg);
-  transition:0.6s;
+  top:5%;
+  left:10%;
+  width:80%;
+  height:40%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.4),
+    transparent
+  );
+  border-radius:50px;
 }
 
-button:hover::before,
-.fab:hover::before,
-.saveBtn:hover::before,
-.back:hover::before{
-  left:120%;
+/* bottom glow */
+.liquid-btn::before{
+  content:"";
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:3px;
+  background: linear-gradient(90deg, transparent, gold, transparent);
 }
 
-/* HOVER */
-button:hover,
-.fab:hover,
-.saveBtn:hover,
-.back:hover{
-  transform:scale(1.08);
-  box-shadow:
-    0 12px 35px rgba(0,0,0,0.35),
-    inset 0 1px 18px rgba(255,255,255,0.5);
+/* hover */
+.liquid-btn:hover{
+  transform: translateY(-3px);
 }
 
-/* CLICK */
-button:active,
-.fab:active,
-.saveBtn:active,
-.back:active{
-  transform:scale(0.95);
+/* click */
+.liquid-btn:active{
+  transform: scale(0.97);
 }
 
 /* TOP BUTTONS */
@@ -118,18 +117,13 @@ button:active,
   margin:10px;
 }
 
-.topBtns button{
-  padding:10px 14px;
-  margin:5px;
-}
-
 /* LIST */
 .list{
   padding:10px;
 }
 
 .card{
-  background:white;
+  background:#1e1e1e;
   padding:15px;
   margin-bottom:10px;
   border-radius:12px;
@@ -143,10 +137,15 @@ button:active,
   width:60px;
   height:60px;
   border-radius:50%;
-  font-size:30px;
   display:flex;
   justify-content:center;
   align-items:center;
+  font-size:30px;
+
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  border:1px solid rgba(255,255,255,0.2);
+  box-shadow:0 8px 25px rgba(0,0,0,0.6);
 }
 
 /* EDITOR */
@@ -162,6 +161,8 @@ button:active,
   font-size:20px;
   border:none;
   outline:none;
+  background:transparent;
+  color:white;
 }
 
 #content{
@@ -169,18 +170,17 @@ button:active,
   border:none;
   outline:none;
   resize:none;
+  background:transparent;
+  color:white;
 }
 
 /* BACK */
 .back{
-  padding:8px 14px;
-  display:inline-block;
   margin-bottom:10px;
 }
 
 /* SAVE */
 .saveBtn{
-  padding:12px;
   width:100%;
 }
 
@@ -194,20 +194,20 @@ button:active,
 <div class="header">अनकहे लफ्ज़</div>
 
 <div class="topBtns">
-  <button onclick="exportData()">📤 Backup</button>
+  <button class="liquid-btn" onclick="exportData()">📤 Backup</button>
   <input type="file" id="importFile" onchange="importData()" style="display:none;">
-  <button onclick="document.getElementById('importFile').click()">📥 Restore</button>
+  <button class="liquid-btn" onclick="document.getElementById('importFile').click()">📥 Restore</button>
 </div>
 
 <div id="listPage" class="list"></div>
 
 <div id="editor">
-  <div class="back" onclick="goBack()">← Back</div>
+  <button class="liquid-btn back" onclick="goBack()">← Back</button>
 
   <input id="title" placeholder="Title">
   <textarea id="content" placeholder="Write your kavita..."></textarea>
 
-  <button class="saveBtn" onclick="save()">Save</button>
+  <button class="liquid-btn saveBtn" onclick="save()">Save</button>
 </div>
 
 <div class="fab" onclick="newNote()">+</div>
@@ -315,4 +315,4 @@ load();
 </script>
 
 </body>
-  </html>
+    </html>
